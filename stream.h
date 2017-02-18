@@ -28,7 +28,7 @@ namespace binstream {
 
 	class stream {
 	protected:
-		std::string buffer;
+		std::string buffer_data;
 		mutable unsigned long position_value;
 
 	public:
@@ -63,6 +63,9 @@ namespace binstream {
 
 		unsigned long position() const;
 		void position(unsigned long value);
+
+		std::string buffer() const;
+		void buffer(const std::string &value);
 	};
 	
 	#undef DECLARE_METHOD

@@ -4,25 +4,25 @@
 
 namespace binstream {
 	stream::stream() :
-		buffer(), position_value(0) {}
+		buffer_data(), position_value(0) {}
 
 	stream::stream(const std::string &buffer) :
-		buffer(buffer), position_value(0) {}
+		buffer_data(buffer), position_value(0) {}
 
 	stream::stream(const char *buffer, unsigned long size) :
-		buffer(buffer, size), position_value(0) {}
+		buffer_data(buffer, size), position_value(0) {}
 
 	stream::stream(unsigned long size) :
-		buffer(size, '\0'), position_value(0) {}
+		buffer_data(size, '\0'), position_value(0) {}
 
 	stream::~stream() {}
 
 	bool stream::get(std::string &buffer) const {
-		if (this->buffer.size() - position_value < buffer.size()) {
+		if (this->buffer_data.size() - position_value < buffer.size()) {
 			return false;
 		}
 		
-		buffer = this->buffer.substr(position_value, buffer.size());
+		buffer = this->buffer_data.substr(position_value, buffer.size());
 		position_value += buffer.size();
 		return true;
 	}
@@ -36,8 +36,8 @@ namespace binstream {
 #if ENDIAN == ENDIAN_LITTLE
 		return get(buffer);
 #elif ENDIAN == ENDIAN_BIG
-		if (get(buffer)) {
-			std::reverse(buffer.begin(), buffer.end());
+		if (get(buffer_data)) {
+			std::reverse(buffer_data.begin(), buffer_data.end());
 			return true;
 		}
 		
@@ -52,7 +52,7 @@ namespace binstream {
 
 	bool stream::getBig(std::string &buffer) const {
 #if ENDIAN == ENDIAN_BIG
-		return get(buffer);
+		return get(buffer_data);
 #elif ENDIAN == ENDIAN_LITTLE
 		if (get(buffer)) {
 			std::reverse(buffer.begin(), buffer.end());
@@ -69,14 +69,14 @@ namespace binstream {
 	}
 
 	void stream::put(const std::string &buffer) {
-		this->buffer += buffer;
+		this->buffer_data += buffer;
 	}
 
 	void stream::putLittle(const std::string &buffer) {
 #if ENDIAN == ENDIAN_LITTLE
 		put(buffer);
 #elif ENDIAN == ENDIAN_BIG
-		auto swappedBuffer = buffer;
+		auto swappedBuffer = buffer_data;
 		std::reverse(swappedBuffer.begin(), swappedBuffer.end());
 		put(swappedBuffer);
 #endif
@@ -84,7 +84,7 @@ namespace binstream {
 
 	void stream::putBig(const std::string &buffer) {
 #if ENDIAN == ENDIAN_BIG
-		put(buffer);
+		put(buffer_data);
 #elif ENDIAN == ENDIAN_LITTLE
 		auto swappedBuffer = buffer;
 		std::reverse(swappedBuffer.begin(), swappedBuffer.end());
@@ -109,5 +109,14 @@ namespace binstream {
 
 	void stream::position(unsigned long value) {
 		position_value = value;
+	}
+
+	std::string stream::buffer() const {
+		return buffer_data;
+	}
+
+	void stream::buffer(const std::string &value) {
+		buffer_data = value;
+		position_value = 0;
 	}
 }
