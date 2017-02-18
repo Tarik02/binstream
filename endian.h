@@ -3,7 +3,6 @@
 #define ENDIAN_BIG 0
 #define ENDIAN_LITTLE 1
 
-#if !(defined(BIG_ENDIAN) || defined(LITTLE_ENDIAN))
 #if defined(__BYTE_ORDER) && __BYTE_ORDER == __BIG_ENDIAN || \
     defined(__BIG_ENDIAN__) || \
     defined(__ARMEB__) || \
@@ -27,5 +26,3 @@
 #error "I don't know what architecture this is!"
 
 #endif
-#endif
-
