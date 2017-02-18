@@ -4,26 +4,26 @@
 
 namespace binstream {
 	stream::stream() :
-		buffer(), position(0) {}
+		buffer(), position_value(0) {}
 
 	stream::stream(const std::string &buffer) :
-		buffer(buffer), position(0) {}
+		buffer(buffer), position_value(0) {}
 
 	stream::stream(const char *buffer, unsigned long size) :
-		buffer(buffer, size), position(0) {}
+		buffer(buffer, size), position_value(0) {}
 
 	stream::stream(unsigned long size) :
-		buffer(size, '\0'), position(0) {}
+		buffer(size, '\0'), position_value(0) {}
 
 	stream::~stream() {}
 
 	bool stream::get(std::string &buffer) const {
-		if (this->buffer.size() - position < buffer.size()) {
+		if (this->buffer.size() - position_value < buffer.size()) {
 			return false;
 		}
 		
-		buffer = this->buffer.substr(position, buffer.size());
-		position += buffer.size();
+		buffer = this->buffer.substr(position_value, buffer.size());
+		position_value += buffer.size();
 		return true;
 	}
 
@@ -101,5 +101,13 @@ namespace binstream {
 		unsigned long length = value.length();
 		put(length);
 		put(value);
+	}
+
+	unsigned long stream::position() const {
+		return position_value;
+	}
+
+	void stream::position(unsigned long value) {
+		position_value = value;
 	}
 }

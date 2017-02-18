@@ -29,7 +29,7 @@ namespace binstream {
 	class stream {
 	protected:
 		std::string buffer;
-		mutable unsigned long position;
+		mutable unsigned long position_value;
 
 	public:
 		stream();
@@ -38,7 +38,7 @@ namespace binstream {
 		stream(unsigned long size);
 		~stream();
 
-		inline void skip(unsigned long count) const { position += count; }
+		inline void skip(unsigned long count) const { position_value += count; }
 		bool get(std::string &buffer) const;
 		bool get(std::string &buffer, unsigned long size) const;
 		bool getLittle(std::string &buffer) const;
@@ -60,6 +60,9 @@ namespace binstream {
 
 		bool getString(std::string &value) const;
 		void putString(const std::string &value);
+
+		unsigned long position() const;
+		void position(unsigned long value);
 	};
 	
 	#undef DECLARE_METHOD
