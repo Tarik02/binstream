@@ -32,6 +32,7 @@ int main() {
 	float valueFloat = 1000;
 	double valueDouble = 1000;
 	long double valueLongDouble = 1000;
+	std::string valueString = "Hello, BinStream!";
 
 	stream.put(valueSignedChar);
 	stream.put(valueUnsignedChar);
@@ -44,6 +45,7 @@ int main() {
 	stream.put(valueFloat);
 	stream.put(valueDouble);
 	stream.put(valueLongDouble);
+	stream.put(valueString);
 
 	TEST((stream.get(valueSignedChar)) &&       (valueSignedChar == 10))
 	TEST((stream.get(valueUnsignedChar)) &&     (valueUnsignedChar == 10))
@@ -56,6 +58,7 @@ int main() {
 	TEST((stream.get(valueFloat)) &&            (valueFloat == 1000))
 	TEST((stream.get(valueDouble)) &&           (valueDouble == 1000))
 	TEST((stream.get(valueLongDouble)) &&       (valueLongDouble == 1000))
+	TEST((stream.get(valueString)) &&           (valueString == "Hello, BinStream!"))
 	
 	cout
 		<< "Unit test "

@@ -91,4 +91,15 @@ namespace binstream {
 		put(swappedBuffer);
 #endif
 	}
+
+	bool stream::getString(std::string &value) {
+		unsigned long length;
+		return (get(length)) && (get(value, length));
+	}
+
+	void stream::putString(const std::string &value) {
+		unsigned long length = value.length();
+		put(length);
+		put(value);
+	}
 }
