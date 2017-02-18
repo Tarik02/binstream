@@ -58,7 +58,7 @@ namespace binstream {
 		DECLARE_METHOD_NOSIGN(double)
 		DECLARE_METHOD_NOSIGN(long double)
 
-		bool getString(std::string &value);
+		bool getString(std::string &value) const;
 		void putString(const std::string &value);
 	};
 	

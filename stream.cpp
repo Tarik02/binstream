@@ -92,7 +92,7 @@ namespace binstream {
 #endif
 	}
 
-	bool stream::getString(std::string &value) {
+	bool stream::getString(std::string &value) const {
 		unsigned long length;
 		return (get(length)) && (get(value, length));
 	}
