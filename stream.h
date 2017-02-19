@@ -50,6 +50,7 @@ namespace binstream {
 		void putLittle(const std::string &buffer);
 		void putBig(const std::string &buffer);
 
+		DECLARE_METHOD_NOSIGN(bool)
 		DECLARE_METHOD(char)
 		DECLARE_METHOD(short)
 		DECLARE_METHOD(long)
