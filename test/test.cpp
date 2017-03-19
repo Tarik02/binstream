@@ -1,8 +1,7 @@
 #include <iostream>
-#include "stream.h"
+#include <binstream.h>
 
 using namespace std;
-using namespace binstream;
 
 #define TEST(condition) { \
 		++tests; \
@@ -17,7 +16,7 @@ using namespace binstream;
 	}
 
 int main() {
-	stream stream;
+	binstream stream;
 
 	unsigned long tests = 0, successTests = 0, failedTests = 0;
 
