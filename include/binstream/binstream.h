@@ -397,6 +397,8 @@ namespace binstreamtemponarynamespace {
 		std::string buffer() const;
 		void buffer(const std::string &value);
 
+		std::string dump() const;
+
 	private:
 		enum class Endian { Little, Big };
 		static Endian endian();

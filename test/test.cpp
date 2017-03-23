@@ -1,5 +1,5 @@
 #include <iostream>
-#include <binstream.h>
+#include <binstream/binstream.h>
 
 using namespace std;
 

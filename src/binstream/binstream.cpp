@@ -1,4 +1,6 @@
 #include "binstream/binstream.h"
+#include <iomanip>
+#include <sstream>
 #include <algorithm>
 
 namespace binstreamtemponarynamespace {
@@ -77,10 +79,12 @@ namespace binstreamtemponarynamespace {
 		switch (endian()) {
 		case Endian::Little:
 			put(buffer);
+			break;
 		case Endian::Big:
 			auto swappedBuffer = buffer;
 			std::reverse(swappedBuffer.begin(), swappedBuffer.end());
 			put(swappedBuffer);
+			break;
 		}
 	}
 
@@ -88,10 +92,12 @@ namespace binstreamtemponarynamespace {
 		switch (endian()) {
 		case Endian::Big:
 			put(buffer);
+			break;
 		case Endian::Little:
 			auto swappedBuffer = buffer;
 			std::reverse(swappedBuffer.begin(), swappedBuffer.end());
 			put(swappedBuffer);
+			break;
 		}
 	}
 
@@ -121,6 +127,68 @@ namespace binstreamtemponarynamespace {
 	void binstream::buffer(const std::string &value) {
 		buffer_data = value;
 		position_value = 0;
+	}
+
+	std::string binstream::dump() const {
+		static char Hex[] = "0123456789ABCDEF";
+
+		std::stringstream ss;
+
+		auto length = buffer_data.size();
+		auto width = 0;
+		for (unsigned long temp = length; temp != 0; temp /= 10, ++width);
+
+		unsigned long i = 0;
+		auto it = buffer_data.begin();
+		for (unsigned long row = 0;; ++row) {
+			ss << std::setw(width) << i << ": ";
+
+			auto si = i;
+			auto sit = it;
+			for (unsigned long col = 0; col < 8; ++col) {
+				auto ch = *it;
+
+				ss << Hex[(ch >> 4) & 0xF] << Hex[ch & 0xF] << " ";
+
+				++i;
+				++it;
+
+				if (i >= length) {
+					break;
+				}
+			}
+
+			ss << "   ";
+			for (unsigned long j = i; j < ((i + 7) / 8) * 8; ++j) {
+				ss << "   ";
+			}
+
+			for (unsigned long col = 0; col < 8; ++col) {
+				auto ch = *sit;
+
+				if ((ch >= 0x20) && (ch <= 0x7E)) { // Hardcoded
+					ss << ch;
+				} else {
+					ss << ".";
+				}
+
+				++si;
+				++sit;
+
+				if (si >= length) {
+					break;
+				}
+			}
+
+			if (i >= length) {
+				goto done;
+			}
+
+			ss << std::endl;
+		}
+
+done:
+		return ss.str();
 	}
 
 	binstream::Endian binstream::endian() {
